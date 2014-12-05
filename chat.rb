@@ -6,7 +6,8 @@ require 'socket'
 # Enter that IP address here.
 MY_INTERNAL_IP = "192.168.x.x"
 
-# You and a friend should forward a port (at the router level).
+# You and a friend should forward a port (at the router level). They don't need
+# to be the same port.
 
 # Let's say you forward external port 1234 to port 5678 on your machine.
 MY_PORT = 5678
