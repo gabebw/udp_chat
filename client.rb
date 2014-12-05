@@ -1,13 +1,15 @@
 # CLIENT sends data TO someone else
 require "socket"
 
-EDWARD_LOCAL_IP_ON_TBOT = "10.173.64.114"
+IP = ARGV[0]
+PORT = ARGV[1].to_i
 
 socket = UDPSocket.new
 
 loop do
-  data = gets.chomp
-  socket.send(data, 0, EDWARD_LOCAL_IP_ON_TBOT, 33333)
+  print "> "
+  data = STDIN.gets.chomp
+  socket.send(data, 0, IP, PORT)
   if data == "/quit"
     break
   end
