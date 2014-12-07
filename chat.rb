@@ -1,4 +1,4 @@
-require 'socket'
+require "socket"
 
 # If you're on OS X, open up System Preferences > Network and look under
 # "Status: Connected". It should say "and has the IP address a.b.c.d".
@@ -26,22 +26,23 @@ me = { ip: MY_INTERNAL_IP, port: MY_PORT, name: 'Gabe' }
 friend = { ip: THEIR_EXTERNAL_IP, port: THEIR_PORT, name: 'Edward' }
 
 BasicSocket.do_not_reverse_lookup = true
+SOCKOPTS = [Socket::SOL_SOCKET, Socket::SO_BROADCAST, true].freeze
 
 sender = UDPSocket.new
-sender.setsockopt(Socket::SOL_SOCKET, Socket::SO_BROADCAST, true)
+sender.setsockopt(*SOCKOPTS)
 
 receiver = UDPSocket.new
 receiver.bind(me[:ip], me[:port])
-receiver.setsockopt(Socket::SOL_SOCKET, Socket::SO_BROADCAST, true)
+receiver.setsockopt(*SOCKOPTS)
 
-send_thread = Thread.new(me, friend, sender) do |me, friend, sender|
+send_thread = Thread.new do
   loop do
     puts "Inside send_thread"
 
     print "> "
     data = $stdin.gets.chomp
     send_message(data, me, friend, sender)
-    break if data == '/quit'
+    break if data == "/quit"
   end
 end
 
@@ -51,7 +52,7 @@ receive_thread = Thread.new do
 
     data, _ = receiver.recvfrom(1024)
     $stdout.print("#{friend[:name]}: #{data}\n")
-    break if data == '/quit'
+    break if data == "/quit"
   end
 end
 
