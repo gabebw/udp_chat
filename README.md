@@ -12,6 +12,18 @@ programming.
 [@edwardloveall]: https://twitter.com/edwardloveall
 [Networking for Game Programmers]: http://gafferongames.com/networking-for-game-programmers/udp-vs-tcp/
 
+## Set up
+
+First, bundle:
+
+    bundle
+
+Then copy `env.example` to `.env` and edit it. It's well-documented.
+
+Now you can chat:
+
+    ruby chat.rb
+
 ## OK, sure, but this isn't a game?
 
 Yeah, fair question. We decided to implement person-to-person chat first, which
