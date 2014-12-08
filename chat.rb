@@ -37,9 +37,6 @@ receiver.setsockopt(*SOCKOPTS)
 
 send_thread = Thread.new do
   loop do
-    puts "Inside send_thread"
-
-    print "> "
     data = $stdin.gets.chomp
     send_message(data, me, friend, sender)
     break if data == "/quit"
@@ -48,8 +45,6 @@ end
 
 receive_thread = Thread.new do
   loop do
-    puts "Inside receive_thread"
-
     data, _ = receiver.recvfrom(1024)
     $stdout.print("#{friend[:name]}: #{data}\n")
     break if data == "/quit"
@@ -57,7 +52,8 @@ receive_thread = Thread.new do
 end
 
 def send_message(message, me, friend, sender)
-  $stdout.print "\rFrom you: #{me[:name]}: #{message}\n"
+  $stdout.print "\r\e[A\e[K"
+  $stdout.print "#{me[:name]}: #{message}\n"
   sender.send(message, 0, friend[:ip], friend[:port])
 end
 
