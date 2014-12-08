@@ -35,7 +35,7 @@ receiver = UDPSocket.new
 receiver.bind(me[:ip], me[:port])
 receiver.setsockopt(*SOCKOPTS)
 
-def quit
+def quit(sender, receiver)
   sender.close
   receiver.close
 end
@@ -44,7 +44,7 @@ send_thread = Thread.new do
   loop do
     data = $stdin.gets.chomp
     send_message(data, me, friend, sender)
-    quit if data.match("/quit")
+    quit(sender, receiver) if data.match("/quit")
   end
 end
 
@@ -52,7 +52,7 @@ receive_thread = Thread.new do
   loop do
     data, _ = receiver.recvfrom(1024)
     $stdout.print("#{friend[:name]}: #{data}\n")
-    quit if data.match("/quit")
+    quit(sender, receiver) if data.match("/quit")
   end
 end
 
